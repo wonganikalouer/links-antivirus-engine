@@ -31,6 +31,9 @@ public class DiskEngine implements Runnable{
          UIManager.UI ui;
         public DiskEngine(File file,TrayIcon ti) {
             folder=file;
+            if(file.equals(null)){
+            return;
+            }
             localTray=ti;
             actionMan=new ActionManager(localTray);
             max=file.getTotalSpace()-file.getFreeSpace();
@@ -81,7 +84,7 @@ public class DiskEngine implements Runnable{
                 }
                 
             }catch(InterruptedException e){
-                System.err.println(e.getMessage());
+                ui.dispose();
             }
         }
 

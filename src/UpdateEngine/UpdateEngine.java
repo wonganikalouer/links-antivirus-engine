@@ -48,6 +48,8 @@ public class UpdateEngine {
                     //update is good to download
 //                    ui.getEngine().executeScript("Toast(\"Downloading Update <br>Version : "+version+"\")");
                     startDownload(downloadLink);
+                    ui.getEngine().executeScript("Toast('download started')");
+                    
                     }else{
 //                    ui.getEngine().executeScript("To/ast(\"You are already up to date\")");
                     }

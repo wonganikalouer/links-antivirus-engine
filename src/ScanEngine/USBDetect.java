@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import java.io.File;
 import RegistrationEngine.*;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 public class USBDetect implements Runnable{
     //<editor-fold desc="variables">
@@ -71,8 +72,9 @@ public class USBDetect implements Runnable{
         if(drv.length>drives_.size()){
                 //checkRemoved(drv);
                 for(int i=0;i<drv.length;i++){
-                    if(!checkDrive(drv[i]) && !drv[i].equals("")){
+                    if(!checkDrive(drv[i]) && !drv[i].equals("") && new File(drv[i]).getTotalSpace()>0){
                     drives_.add(drv[i]);
+                    JOptionPane.showMessageDialog(null, "Drove loaded is "+new File(drv[i]).getTotalSpace(), "Drive Info", 1);
                     //scan this Drive
                     DiskEngine engine=new DiskEngine(new File(drv[i]+":/"),localIcon);
                     Thread th=new Thread(engine);
@@ -123,53 +125,11 @@ public class USBDetect implements Runnable{
     //<editor-fold desc="seting up trayicon into the system">
     private void setupMenu() {
         
-        PopupMenu mainMenu=new PopupMenu();
         
-        MenuItem open=new MenuItem("Open Scanner");
-        MenuItem about=new MenuItem("About Links");
-        Menu disable=new Menu("Disable Seurity");
-        MenuItem update=new MenuItem("Check Update");
-        MenuItem exit=new MenuItem("Exit Software",new MenuShortcut(KeyEvent.VK_L,true));
-        
-        
-        open.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                gs.executeExe("LinksAntivirus.exe");
-            }
-        });
-        
-        about.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-             //open GUI of About With Library Data
-            }
-        });
-        
-        update.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                gs.executeExe("Downloader.exe");
-            }
-        });
-        
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        
-        
-        //add the popup menu
-        mainMenu.add(open);
-        mainMenu.add(about);
-//        mainMenu.add(disable);
-        mainMenu.add(update);
-        mainMenu.addSeparator();
-        mainMenu.add(exit);
-        localIcon.setPopupMenu(mainMenu);
-        try{localTray.add(localIcon);}catch(Exception e){}
+        try{localTray.add(localIcon);
+        TrayManager tm=new TrayManager(localTray,localIcon);
+        tm.__init();
+        }catch(Exception e){}
     }
     //</editor-fold>
 

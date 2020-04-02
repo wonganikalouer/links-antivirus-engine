@@ -67,6 +67,16 @@ public class GSLib {
         }
     }
     
+    public boolean executeCMD(String command_to_execute){
+    try {
+            String command = command_to_execute;
+            Process process = Runtime.getRuntime().exec(System.getenv("SystemDrive")+"/Windows/System32/cmd.exe "+command);
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
+    }
+    
     public boolean forceKill(String fileLocation){
     try {
         
